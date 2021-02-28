@@ -27,39 +27,25 @@ public class UserActionServiceImpl implements UserActionService {
         LOGGER.info("createUserAction called");
         List<UserAction> userActions = new LinkedList<>();
         for (String[] p: params) {
-            if (p.length != 12) continue;
-            String ssoId = p[0];
-            Long ts = Long.parseLong(p[1]);
-            String grp = p[2];
-            String type = p[3];
-            String subtype = p[4];
-            String url = p[5];
-            String orgId = p[6];
-            String formId = p[7];
-            String code = p[8];
-            String ltpa = p[9];
-            String sudirresponse = p[10];
-            LocalDateTime ydmh = null;
             try {
-                ydmh = adapter.unmarshal(p[11]);
+                UserAction userAction = new UserAction();
+                userAction.setSsoId(p[0]);
+                userAction.setTs(Long.parseLong(p[1]));
+                userAction.setGrp(p[2]);
+                userAction.setType(p[3]);
+                userAction.setSubtype(p[4]);
+                userAction.setUrl(p[5]);
+                userAction.setOrgId(p[6]);
+                userAction.setFormId(p[7]);
+                userAction.setCode(p[8]);
+                userAction.setLtpa(p[9]);
+                userAction.setSudirresponse(p[10]);
+                userAction.setYdmh(adapter.unmarshal(p[11]));
+                userActions.add(userAction);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
+                continue;
             }
-            UserAction userAction = new UserAction();
-            userAction.setSsoId(ssoId);
-            userAction.setTs(ts);
-            userAction.setGrp(grp);
-            userAction.setType(type);
-            userAction.setSubtype(subtype);
-            userAction.setUrl(url);
-            userAction.setOrgId(orgId);
-            userAction.setFormId(formId);
-            userAction.setCode(code);
-            userAction.setLtpa(ltpa);
-            userAction.setSudirresponse(sudirresponse);
-            userAction.setYdmh(ydmh);
-
-            userActions.add(userAction);
         }
         repository.createUserActon(userActions);
     }
